@@ -24,7 +24,7 @@ In our project, we needed a fast solution to work with accommodation dates (chec
 
 ## Examples
 ```javascript
-const today = danCreate() // today, example 20250507
+const today = danCreate() // 20250507 (today)
 const tomorrow = danAdd(today, 1, 'd') // 20250508
 const yesterday = danSubtract(today, 1, 'd') // 20250506
 const startOfMonth = danStartOf(today, 'm') // 20250501
@@ -46,56 +46,70 @@ const isValid = isDan(today) // true
 >
 > As a param in the API functions, dan means you can pass a number (20250507), a new Date(), string ('2025-05-07', '20250507'), dayjs object or null = today.
 
-```danCreate(dan, format?, language?)``` - creates a date as number from a string, number, Date() object, dayjs. Returns a number unless format is specified.
-* `date` - date as Date(), string ('2025-05-07', '20250507'), number (20250507), null = today
+```danCreate(dan, format?, language?)```  
+Creates a date as number from a string, number, Date() object, dayjs. Returns a number unless format is specified.
+* `dan` - date as Date(), string ('2025-05-07', '20250507'), number (20250507), null = today
 * `format` - optional, string, when specified, returns a string in the specified format
 * `language` - optional, string, when specified, returns the formatted string in the specified language. English is default.
 
-```danAdd(dan, amount, unit, format?, language?)``` - adds a number of units to a date. Returns a number unless format is specified.
-* `date` - date in any format (see danCreate)
+```danAdd(dan, amount, unit, format?, language?)```  
+Adds a number of units to a date. Returns a number unless format is specified.
+* `dan` - date in any format (see danCreate)
 * `amount` - number of units to add (can be negative)
 * `unit` - string, one of 'd' = days, 'w' = weeks, 'm' = months, 'y' = years
 * `format` - same as with danCreate()
 * `language` - same as with danCreate()
 
-```danSubtract(dan, amount, unit, format?, language?)``` - subtracts a number of units from a date. Works the same as danAdd() with negative amount.
+```danSubtract(dan, amount, unit, format?, language?)```  
+Subtracts a number of units from a date. Works the same as danAdd() with negative amount.
 
-```danSet(dan, unit, value, format?, language?)``` - sets a specific unit of a date. Returns a number unless format is specified.
-* `date` - date in any format (see danCreate)
+```danSet(dan, unit, value, format?, language?)```  
+Sets a specific unit of a date. Returns a number unless format is specified.
+* `dan` - date in any format (see danCreate)
 * `unit` - string, one of 'd' = days, 'm' = months, 'y' = years
 * `value` - number, the value to set the unit to
 
-```danStartOf(dan, unit, format?, language?)``` - sets a date to the start of a specific unit. Returns a number unless format is specified.
-* `date` - date in any format (see danCreate)
+```danStartOf(dan, unit, format?, language?)```  
+Sets a date to the start of a specific unit. Returns a number unless format is specified.
+* `dan` - date in any format (see danCreate)
 * `unit` - string, one of 'w' = week', m' = month, 'y' = year
 
-```danEndOf(dan, unit, format?, language?)``` - sets a date to the end of a specific unit. Returns a number unless format is specified.
-* `date` - date in any format (see danCreate)
+```danEndOf(dan, unit, format?, language?)```  
+Sets a date to the end of a specific unit. Returns a number unless format is specified.
+* `dan` - date in any format (see danCreate)
 * `unit` - string, one of 'w' = week', m' = month, 'y' = year
 
-```danGet(dan, unit)``` - gets a specific unit of a date. Returns a number.
-* `date` - date in any format (see danCreate)
+```danGet(dan, unit)```  
+Gets a specific unit of a date. Returns a number.
+* `dan` - date in any format (see danCreate)
 * `unit` - string, one of 'd' = days, 'm' = months, 'y' = years
 
-```danNightsArray(start, end)``` - returns an array of dates (numbers) between start and end, exclusive.
+```danNightsArray(start, end)```  
+Returns an array of dates (numbers) between start and end, exclusive.
 * `start` - date in any format (see danCreate)
 * `end` - date in any format (see danCreate)
 * Example: `danNightsArray('2025-05-07', '2025-05-10')` returns [20250507, 20250508, 20250509] (May 7, 8 and 9)
 
-```danNightsCount(start, end)``` - returns the number of nights between start and end, exclusive.
+```danNightsCount(start, end)```  
+Returns the number of nights between start and end, exclusive.
 * `start` - date in any format (see danCreate)
 * `end` - date in any format (see danCreate)
 * Example: `danNightsCount('2025-05-07', '2025-05-10')` returns 3 (May 7, 8 and 9)
 
-```danToDate(dan)``` - converts a dan to a Date() object.
+```danToDate(dan)```  
+Converts a dan to a Date() object.
 
-```isDan(dan)``` - checks if a dan is valid (number), returns true or false.
+```isDan(dan)```  
+Checks if a dan is valid (number), returns true or false.
 
-```danWeekday(dan)``` - returns the weekday of a dan (0 = Sunday, 1 = Monday, ..., 6 = Saturday).
+```danWeekday(dan)```  
+Returns the weekday of a dan (0 = Sunday, 1 = Monday, ..., 6 = Saturday).
 
-```danFormat(dan, format, language)``` - formats a dan to a string in the specified format and language. Returns a string.
+```danFormat(dan, format, language)```  
+Formats a dan to a string in the specified format and language. Returns a string.
 
-```danDaysInMonth(dan)``` - returns the number of days in a month of a dan.
+```danDaysInMonth(dan)```  
+Returns the number of days in a month of a dan.
 
 ## Todo
 * danNightsArray() - confusion about params - start / end or firstNight / lastNight??
@@ -113,6 +127,6 @@ const isValid = isDan(today) // true
 ## Contributing
 If you want to contribute, please fork the repo and create a pull request.
 
-If you have any questions or suggestions, please open an issue.
+If you have any questions or suggestions, please [open an issue](https://github.com/tothradoslav/dan).
 
-This
+Dan focuses on **peformance**. If you have ideas for improvements, please let me know.
