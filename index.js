@@ -2,4 +2,4 @@ import * as dan from './dan.js';
 
 export default dan;
 
-console.log(dan.danCreate(null, 'YYYY-MM-DD'));
+console.log(dan.dan(null, 'YYYY-MM-DD'));

@@ -3,7 +3,7 @@ import sk from './locale/sk.js';
 
 const locales = {en, sk}
 
-export function danCreate(date = null, format = null, language) {
+export function dan(date = null, format = null, language) {
   let dan;
   if (date === null) {
     dan = dateToDan(new Date());
@@ -169,7 +169,7 @@ export function isDan(dan) {
 
 
 function parseDan(dan) {
-  if (!isDan(dan)) dan = danCreate(dan);
+  if (!isDan(dan)) dan = dan(dan);
   if (typeof dan === 'string') dan = parseInt(dan, 10);
   return {
     year: Math.floor(dan / 10000),
@@ -214,7 +214,7 @@ function danToJdn(dan) {
 function jdnToDan(dayIndex) {
   if (!dayIndex) {
     console.log('ERROR jdnToDan', dayIndex, new Error().stack);
-    return danCreate();
+    return dan();
   }
   let year = 2000;
   // Determine the year by subtracting full years' days

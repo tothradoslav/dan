@@ -1,6 +1,6 @@
 {
   "name": "@radkototh/dan",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Date As Number",
   "main": "index.js",
   "type": "module",
@@ -9,7 +9,7 @@
   },
   "private": false,
   "repository": "",
-  "keywords": [],
-  "author": "radkototh <toth.radoslav@gmail.com>",
+  "keywords": ["date", "number", "dan", "date as number"],
+  "author": "radkototh",
   "license": "MIT"
 }

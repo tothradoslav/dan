@@ -1,4 +1,4 @@
-import {danAdd, danCreate} from './dan.js';
+import {danAdd, dan} from './dan.js';
 
 console.time('danAdd()')
 for (let i = 0; i < 1_000_000; i++) {
@@ -6,9 +6,9 @@ for (let i = 0; i < 1_000_000; i++) {
 }
 console.timeEnd('danAdd()')
 
-console.time('danCreate()')
+console.time('dan()')
 for (let i = 0; i < 1_000_000; i++) {
-  danCreate(20231001, 'YYYY-MM-DD');
+  dan(20231001, 'YYYY-MM-DD');
 }
-console.timeEnd('danCreate()')
+console.timeEnd('dan()')
 

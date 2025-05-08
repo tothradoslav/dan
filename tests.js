@@ -1,19 +1,19 @@
-import {danAdd, danCreate, danDaysInMonth, danEndOf, danGet, danNightsArray, danNightsCount, danSet, danStartOf, danSubtract, danToDate, danWeekday} from './dan.js';
+import {danAdd, dan, danDaysInMonth, danEndOf, danGet, danNightsArray, danNightsCount, danSet, danStartOf, danSubtract, danToDate, danWeekday} from './dan.js';
 
 const today = parseInt(new Date().toLocaleDateString('sv').replace(/-/g,''));
 const tests = [
-  [danCreate(), today],
-  [danCreate(new Date()), today],
-  [danCreate(20250218), 20250218],
-  [danCreate('20250218'), 20250218],
-  [danCreate('20250218', 'date'), new Date(2025, 1, 18)],
-  [danCreate('20250218', 'string'), '20250218'],
-  [danCreate('20250218', 'YYYY-MM-DD'), '2025-02-18'],
-  [danCreate('20251218', 'YYYY-MM-DD'), '2025-12-18'],
-  [danCreate('20251201', 'YYYY-MM-DD'), '2025-12-01'],
-  [danCreate('20251201', 'D'), '1'],
-  [danCreate('20251201', 'dddd', 'sk'), 'pondelok'],
-  [danCreate('20251201', 'ddd', 'sk'), 'po'],
+  [dan(), today],
+  [dan(new Date()), today],
+  [dan(20250218), 20250218],
+  [dan('20250218'), 20250218],
+  [dan('20250218', 'date'), new Date(2025, 1, 18)],
+  [dan('20250218', 'string'), '20250218'],
+  [dan('20250218', 'YYYY-MM-DD'), '2025-02-18'],
+  [dan('20251218', 'YYYY-MM-DD'), '2025-12-18'],
+  [dan('20251201', 'YYYY-MM-DD'), '2025-12-01'],
+  [dan('20251201', 'D'), '1'],
+  [dan('20251201', 'dddd', 'sk'), 'pondelok'],
+  [dan('20251201', 'ddd', 'sk'), 'po'],
   [danAdd(20250218, 1, 'd'), 20250219],
   [danAdd(20250218, 1, 'm'), 20250318],
   [danAdd(20250218, 1, 'y'), 20260218],
