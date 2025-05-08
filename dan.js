@@ -3,27 +3,41 @@ import sk from './locale/sk.js';
 
 const locales = {en, sk}
 
-export function dan(date = null, format = null, language) {
-  let dan;
+const danData = {
+  firstYear: 1970,
+  weekdayOfZeroDay: 4,
+  years: Array.from({length: 101}, (_, i) => i === 0 ? 0 : Array.from({length: i}, (_, k) => 365 + (new Date(1970 + k, 1, 29).getDate() === 29 ? 1 : 0)).reduce((s, d) => s + d, 0)),
+  months: [
+    [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365],
+    [0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366],
+  ],
+}
+
+// creator
+
+export function dan(date = null, format = null, formatLanguage) {
+  let result;
   if (date === null) {
-    dan = dateToDan(new Date());
+    result = dateToDan(new Date());
   } else if (date?.$isDayjsObject) {
-    dan = formatDanNumber(date.$y, date.$M + 1, date.$D);
+    result = formatDanNumber(date.$y, date.$M + 1, date.$D);
   } else if (date instanceof Date) {
-    dan = dateToDan(date);
+    result = dateToDan(date);
   } else if (typeof date === 'number') {
     if (date > 20000000 && date < 30000000) {
-      dan = date;
+      result = date;
     }
   } else if (typeof date === 'string') {
     const cleanedDate = date.replace(/[^0-9]/g, '');
-    if (cleanedDate.length === 8) dan = parseInt(date, 10);
+    if (cleanedDate.length === 8) result = parseInt(date, 10);
   }
 
-  return format !== null ? danFormat(dan, format, language) : dan;
+  return format !== null ? danFormat(result, format, formatLanguage) : result;
 }
 
-export function danAdd(dan, amount, unit, format = null, language) {
+// manipulators
+
+export function danAdd(dan, amount, unit, format = null, formatLanguage) {
   let result;
   if (unit === 'd') {
     const jdn = danToJdn(dan);
@@ -55,14 +69,14 @@ export function danAdd(dan, amount, unit, format = null, language) {
   } else {
     throw new Error('Unsupported unit: ' + unit);
   }
-  return format !== null ? danFormat(result, format, language) : result;
+  return format !== null ? danFormat(result, format, formatLanguage) : result;
 }
 
-export function danSubtract(dan, amount, unit, format = null, language) {
-  return danAdd(dan, -amount, unit, format);
+export function danSubtract(dan, amount, unit, format = null, formatLanguage) {
+  return danAdd(dan, -amount, unit, format, formatLanguage);
 }
 
-export function danSet(dan, unit, value, format = null, language) {
+export function danSet(dan, unit, value, format = null, formatLanguage) {
   const {year, month, day} = parseDan(dan);
   let result;
   if (unit === 'y') {
@@ -82,10 +96,10 @@ export function danSet(dan, unit, value, format = null, language) {
   } else {
     throw new Error('Unsupported unit: ' + unit);
   }
-  return format !== null ? danFormat(result, format, language) : result;
+  return format !== null ? danFormat(result, format, formatLanguage) : result;
 }
 
-export function danStartOf(dan, unit, format = null, language) {
+export function danStartOf(dan, unit, format = null, formatLanguage) {
   const {year, month} = parseDan(dan);
   let result;
   if (unit === 'm') {
@@ -99,10 +113,10 @@ export function danStartOf(dan, unit, format = null, language) {
   } else {
     throw new Error('Unsupported unit: ' + unit);
   }
-  return format !== null ? danFormat(result, format, language) : result;
+  return format !== null ? danFormat(result, format, formatLanguage) : result;
 }
 
-export function danEndOf(dan, unit, format = null, language) {
+export function danEndOf(dan, unit, format = null, formatLanguage) {
   const {year, month} = parseDan(dan);
   let result;
   if (unit === 'm') {
@@ -117,9 +131,10 @@ export function danEndOf(dan, unit, format = null, language) {
   } else {
     throw new Error('Unsupported unit: ' + unit);
   }
-  return format !== null ? danFormat(result, format, language) : result;
+  return format !== null ? danFormat(result, format, formatLanguage) : result;
 }
 
+// getters
 
 export function danGet(dan, unit) {
   const {year, month, day} = parseDan(dan);
@@ -129,22 +144,22 @@ export function danGet(dan, unit) {
   throw new Error('Unsupported unit: ' + unit);
 }
 
-export function danNightsArray(firstNight, lastNight) {
-  const jdnFirst = danToJdn(firstNight);
-  const jdnLast = danToJdn(lastNight);
+export function danNightsArray(start, end) {
+  const jdnFirst = danToJdn(start);
+  const jdnLast = danToJdn(end);
   if (jdnFirst > jdnLast) return [];
   const nights = [];
-  for (let jdn = jdnFirst; jdn <= jdnLast; jdn++) {
+  for (let jdn = jdnFirst; jdn < jdnLast; jdn++) {
     nights.push(jdnToDan(jdn));
   }
   return nights;
 }
 
-export function danNightsCount(firstNight, lastNight) {
-  const jdnFirst = danToJdn(firstNight);
-  const jdnLast = danToJdn(lastNight);
+export function danNightsCount(start, end) {
+  const jdnFirst = danToJdn(start);
+  const jdnLast = danToJdn(end);
   if (jdnFirst > jdnLast) return 0;
-  return jdnLast - jdnFirst + 1;
+  return jdnLast - jdnFirst;
 }
 
 export function danToDate(dan) {
@@ -153,8 +168,7 @@ export function danToDate(dan) {
 }
 
 export function danWeekday(dan) {
-  // weekday of the zero day is 6 (Saturday), that's why we add 6
-  const weekday = (danToJdn(dan) + 6) % 7;
+  const weekday = (danToJdn(dan) + danData.weekdayOfZeroDay) % 7;
   return weekday === 0 ? 7 : weekday; // convert 0 to 7
 }
 
@@ -163,10 +177,8 @@ export function danDaysInMonth(year, month) {
 }
 
 export function isDan(dan) {
-
   return dan && typeof dan === 'number' && dan >= 20000000 && dan <= 30000000;
 }
-
 
 function parseDan(dan) {
   if (!isDan(dan)) dan = dan(dan);
@@ -191,13 +203,12 @@ function getMonthDays(year) {
 }
 
 
-// Using January 1, 2000 as the base (day 0)
-// Converts a Dan (YYYYMMDD) to a day index (number of days since 2000-01-01)
-function danToJdn(dan) {
+// Converts a Dan (YYYYMMDD) to a day index (number of days since 1970-01-01)
+function danToJdnOld(dan) {
   const {year, month, day} = parseDan(dan);
   let days = 0;
-  // Accumulate days for full years from 2000 up to (but not including) the given year
-  for (let y = 2000; y < year; y++) {
+  // Accumulate days for full years from 1970 up to (but not including) the given year
+  for (let y = danData.firstYear; y < year; y++) {
     days += isLeapYear(y) ? 366 : 365;
   }
   // Add days for the months passed in the current year
@@ -210,13 +221,18 @@ function danToJdn(dan) {
   return days;
 }
 
-// Converts a day index (number of days since 2000-01-01) back to a Dan (YYYYMMDD)
-function jdnToDan(dayIndex) {
+function danToJdn(dan) {
+  const {year, month, day} = parseDan(dan);
+  return danData['years'][year - danData.firstYear] + danData['months'][isLeapYear(year) ? 1 : 0][month - 1] + day - 1;
+}
+
+// Converts a day index (number of days since 1970-01-01) back to a Dan (YYYYMMDD)
+function jdnToDanOld(dayIndex) {
   if (!dayIndex) {
     console.log('ERROR jdnToDan', dayIndex, new Error().stack);
     return dan();
   }
-  let year = 2000;
+  let year = danData.firstYear;
   // Determine the year by subtracting full years' days
   while (true) {
     const daysInYear = isLeapYear(year) ? 366 : 365;
@@ -237,6 +253,16 @@ function jdnToDan(dayIndex) {
   // The remaining dayIndex corresponds to the day (add 1 because day count is zero-based)
   const day = dayIndex + 1;
   return formatDanNumber(year, month, day);
+}
+
+function jdnToDan(dayIndex) {
+  const yearsIndex = danData.years.findIndex((days) => days > dayIndex) - 1;
+  const year = yearsIndex + danData.firstYear;
+  const isLeap = isLeapYear(year) ? 1 : 0
+  dayIndex -= danData.years[yearsIndex];
+  const month = danData.months[isLeap].findIndex((days) => days > dayIndex);
+  dayIndex -= danData.months[isLeap][month - 1];
+  return formatDanNumber(year, month, dayIndex + 1);
 }
 
 function danFormat(dan, format = 'YYYY-MM-DD', language = 'en') {

@@ -7,7 +7,7 @@
 Dan works with dates as numbers, such as 20250507 (May 7, 2025), ignoring smaller units of time, such as hours, minutes, seconds, etc...
 
 ## Why?
-* very fast (100x - 1000x faster than manipulating regular JS dates with dayjs)
+* very fast (100x faster than manipulating regular JS dates with dayjs)
 * dans are JSON-able (just a number)
 * human-readable when stored (in DB or files) 
 * easy and performant date comparisons or manipulations (e.g. sorting, start < end, etc.)
@@ -33,6 +33,7 @@ dan(20250507) // 20250507
 dan(new Date()) // 20250507
 dan(dayjs()) // 20250507
 
+
 danAdd(today, 1, 'd') // 20250508
 danSubtract(today, 1, 'd') // 20250506
 danStartOf(today, 'm') // 20250501
@@ -42,6 +43,11 @@ danGet(today, 'y') // 2025
 
 dan(null, 'YYYY-MM-DD') // 2025-05-07
 danAdd(null, 1, 'd', 'YYYY-MM-DD') // 2025-05-08
+
+dan(20251201, 'dddd'') // Monday
+dan(20251201, 'dddd', 'en') // Monday
+dan(20251201, 'dddd', 'sk') // pondelok
+
 
 danNightsArray('2025-05-07', '2025-05-10') // [20250507, 20250508, 20250509] (last 
 danNightsCount('2025-05-07', '2025-05-10') // 3
@@ -137,17 +143,11 @@ Returns the number of days in a month of a dan.
 
 
 ## Todo
-* danNightsArray() - confusion about params - start / end or firstNight / lastNight??
 * danWeekday() can be removed and replaced with danGet(dan, 'wd')
 * danGet() add 'w' as week unit
-* create danDaysCount() - same as nights but end inclusive
-* create danDaysArray() - same as nights but end inclusive
 * allow configuration (first day of week, epoch start (1970 default))
-* format compatible with dayjs
-* dan() could be renamed to dan()??
-* danDaysInMonth() - two params (year, month) or one param (dan)
-* readme - add examples for all functions, how tos
-* readme - add formatting options
+* format compatible with dayjs, update readme
+* danDaysInMonth() - two params (year, month) or one param (dan)??
 * add more locales
 
 ## Contributing
