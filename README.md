@@ -103,10 +103,10 @@ Sets a date to the end of a specific unit. Returns a dan unless format is specif
 ### danGet(dan, unit)  
 Gets a specific unit of a date. Returns a number.
 * `dan` - dan (see dan)
-* `unit` - string, one of 'd' = days, 'm' = months, 'y' = years
+* `unit` - string, 'd' = days, 'm' = months, 'y' = years, 'w' = ISO week, 'wd' = weekday
 
 
-### danNightsArray(start, end)  
+### danNightsArray(start, end)   
 Returns an array of dates (numbers) between start and end, exclusive.
 * `start` - dan (see dan)
 * `end` - dan (see dan)
@@ -114,7 +114,7 @@ Returns an array of dates (numbers) between start and end, exclusive.
 Example: `danNightsArray('2025-05-07', '2025-05-10')` returns [20250507, 20250508, 20250509] (May 7, 8 and 9)
 
 
-### danNightsCount(start, end)  
+### danNightsCount(start, end) alias danDiff(start, end)  
 Returns the number of nights between start and end, exclusive.
 * `start` - dan (see dan)
 * `end` - dan (see dan)
@@ -138,16 +138,13 @@ Returns the weekday of a dan (1 = Monday, ..., 7 = Sunday).
 Formats a dan to a string in the specified format and language. Returns a string.
 
 
-### danDaysInMonth(dan)  
-Returns the number of days in a month of a dan.
+### danDaysInMonth(dan) or danDaysInMonth(year, month)
+Returns the number of days in the month of the dan. If two params are passed, the first is the year and the second is the month (1-12).
 
 
 ## Todo
-* danWeekday() can be removed and replaced with danGet(dan, 'wd')
-* danGet() add 'w' as week unit
 * allow configuration (first day of week, epoch start (1970 default))
 * format compatible with dayjs, update readme
-* danDaysInMonth() - two params (year, month) or one param (dan)??
 * add more locales
 
 ## Contributing

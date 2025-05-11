@@ -137,11 +137,24 @@ export function danEndOf(dan, unit, format = null, formatLanguage) {
 // getters
 
 export function danGet(dan, unit) {
+  if (unit === 'wd') return danWeekday(dan);
+  if (unit === 'w') { // iso week
+    const jdn = danToJdn(dan);
+    return Math.floor((jdn + 3) / 7);
+  }
   const {year, month, day} = parseDan(dan);
   if (unit === 'y') return year;
   if (unit === 'm') return month;
   if (unit === 'd') return day;
   throw new Error('Unsupported unit: ' + unit);
+}
+
+export function danDiff(start, end) {
+  return danToJdn(end) - danToJdn(start);
+}
+
+export function danNightsCount(start, end) {
+  return danToJdn(end) - danToJdn(start);
 }
 
 export function danNightsArray(start, end) {
@@ -155,13 +168,6 @@ export function danNightsArray(start, end) {
   return nights;
 }
 
-export function danNightsCount(start, end) {
-  const jdnFirst = danToJdn(start);
-  const jdnLast = danToJdn(end);
-  if (jdnFirst > jdnLast) return 0;
-  return jdnLast - jdnFirst;
-}
-
 export function danToDate(dan) {
   const parsed = parseDan(dan);
   return new Date(parsed.year, parsed.month - 1, parsed.day);
@@ -172,7 +178,12 @@ export function danWeekday(dan) {
   return weekday === 0 ? 7 : weekday; // convert 0 to 7
 }
 
-export function danDaysInMonth(year, month) {
+export function danDaysInMonth(year, month = null) {
+  if (month === null) {
+    const {year: y, month: m} = parseDan(year);
+    month = m;
+    year = y;
+  }
   return getMonthDays(year)[month];
 }
 
